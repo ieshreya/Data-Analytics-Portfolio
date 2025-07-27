@@ -1,5 +1,5 @@
-> I’ve prepared a detailed analysis with comments in a PDF. You can view it here.
-> [SQL Bank Target Marketing Detailed Analysis - PDF](./SQL%20Bank%20Target%20Marketing%20Analysis.pdf)
+I’ve documented the complete analysis along with annotated comments here:  [SQL Bank Target Marketing Detailed Analysis - Full Report (PDF)](./Full%20Report%20-%20SQL%20Bank%20Target%20Marketing%20Analysis.pdf)
+
 # SQL Bank Target Marketing Analysis
 ## Overview
 This project involves a comprehensive analysis of marketing campaigns held by a bank aimed at increasing the number of term deposit subscribers. The goal is to identify the key factors influencing customer decisions, including their financial behaviors and demographic insights. The analysis provides a detailed account of the project’s objectives, business problems, findings, and conclusions.
