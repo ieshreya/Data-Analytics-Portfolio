@@ -1,0 +1,242 @@
+---
+title: "Global Obesity Trends: Power BI Analysis (2011–2023)"
+format:
+  html:
+    toc: true
+    toc-depth: 2
+    fontsize: 10pt
+    theme: flatly
+
+---
+
+
+# Introduction
+
+Obesity is a major global public health concern associated with chronic conditions such as diabetes, heart disease, and reduced quality of life. It poses significant challenges for governments, healthcare systems, and communities worldwide.
+
+This project analyzes **global obesity trends** from 2011 to 2023, along with physical activity and nutritional patterns, to draw insights for targeted public health interventions.
+
+![](./obesity_trends.png) 
+
+[Download the dashboard here](./powerbi_obesity_trends_dashboard.pbix)
+---
+
+# Project Objectives
+
+The objective of this analysis is to conduct a comprehensive study of global obesity trends across:
+
+- **Demographics**: Age, Sex, Race/Ethnicity, and Education  
+- **Geographic locations**: Countries and Regions  
+- **Time period**: 2011–2023  
+
+---
+
+# Steps Followed in Analysis
+
+1. **Project Objectives** — Define analysis scope and expected outcomes.  
+2. **Data Connection** — Connect Power BI to the cleaned dataset.  
+3. **Data Cleaning & Transformation** — Handle missing values, normalize column names, and filter relevant categories.  
+4. **Data Modelling** — Create relationships between demographic, geographic, and metric fields.  
+5. **DAX Calculations & Measures** — Build custom KPIs and performance metrics.  
+6. **Build Charts** — Develop visuals for each KPI.  
+7. **Dashboard Design & Formatting** — Apply consistent layout, colors, and interactions.  
+8. **Final Insights** — Summarize findings and key takeaways.  
+9. **Report Development** — Document methodology and results.
+
+---
+
+# Data Source
+
+- **Primary Source:** [Data.World - Cleaned Obesity Dataset](https://data.world/erm3494/cleanedobesity)  
+- **Reference:** [CDC - Division of Nutrition, Physical Activity, and Obesity](https://www.cdc.gov/nccdphp/dnpao/index.html)
+
+## About Dataset
+
+This dataset originates from the **Behavioral Risk Factor Surveillance System (BRFSS)**, titled *“Nutrition, Physical Activity, and Obesity – Behavioral Risk Factor Surveillance System.”* It includes health data related to diet, exercise, and obesity gathered through nationwide surveys.
+
+### Dataset Columns
+
+1. Race/Ethnicity  
+2. Region  
+3. AgeGroup  
+4. Education  
+5. Sex  
+6. Data_Value (Prevalence Rate %)  
+7. Year  
+8. Question  
+9. Category  
+
+---
+
+# KPI Requirements
+
+| KPI Name | Description |
+|-----------|--------------|
+| **Obesity Rate** | Percentage of adults (18+) with obesity, segmented by demographics, geography, and year. |
+| **YoY Participation Change (%)** | Year-over-year change in participation rates from 2011 to 2023 to spot improvements or declines. |
+| **Demographic Diversity Index** | Difference in obesity or activity rates between demographic groups (e.g., Male vs Female). |
+| **Physical Inactivity Rate** | Percentage of adults reporting no leisure-time physical activity, segmented by demographics and year. |
+
+
+# Project Requirements
+
+### Chart 1: Global Obesity Map  
+**Objective:** Visualize global obesity rates across countries to identify high-risk regions.  
+**KPI Metrics:** Obesity Rate by Country (2011–2023).
+
+### Chart 2: Activity Trend Over Time  
+**Objective:** Display physical activity trends (2011–2023) to assess improvement or decline.  
+**KPI Metrics:** YoY Participation Change by Year, Location, and Demographics.
+
+### Chart 3: Demographic Diversity Trends  
+**Objective:** Highlight disparities in obesity and activity rates among demographic groups.  
+**KPI Metrics:** Demographic Diversity Index across Gender and Age.
+
+### Chart 4: Obesity vs. Activity Scatter Plot  
+**Objective:** Explore correlations between obesity rates and inactivity.  
+**KPI Metrics:** Relationship between Obesity Rate and Physical Inactivity Rate across Years, Locations, and Demographics.
+
+### Chart 5: Nutrition Risk Heat Map  
+**Objective:** Identify regions and groups with poor dietary habits for targeted nutrition programs.  
+**KPI Metrics:** Insufficient Fruit Consumption Rate by Location and Demographics.
+
+### Chart 6: Obesity and Inactivity Trend Comparison  
+**Objective:** Compare trends in obesity and inactivity to inform integrated interventions.  
+**KPI Metrics:** Obesity Rate vs. Physical Inactivity Rate (2011–2023).
+
+### Chart 7: High-Risk Population Matrix  
+**Objective:** Pinpoint populations with highest combined risk (obesity + inactivity + poor diet).  
+**KPI Metrics:** Obesity Rate, Physical Inactivity Rate, and Insufficient Fruit Consumption Rate by Demographics and Location.
+
+### Chart 8: Activity and Diet Correlation Bubble Chart  
+**Objective:** Examine relationships among activity, diet, and obesity metrics.  
+**KPI Metrics:** Physical Inactivity Rate, Insufficient Fruit Consumption Rate, and Obesity Rate with slicers for Year and Demographics.
+
+
+# DAX Measures
+
+Below are the DAX measures I used for calculating KPIs in the Power BI dashboard.
+
+
+
+### YoY Change
+Calculates the year-over-year change in average prevalence rate for the selected year.
+
+```DAX
+YoY_Change = 
+VAR CurrentYear = SELECTEDVALUE(obesity_data[Year])
+VAR HasOneYear = HASONEVALUE(obesity_data[Year])
+
+VAR CurrentValue = CALCULATE(
+    AVERAGE(obesity_data[Data_Value]), 
+    obesity_data[Year] = CurrentYear
+)
+
+VAR PrevValue = CALCULATE(
+    AVERAGE(obesity_data[Data_Value]),
+    obesity_data[Year] = CurrentYear - 1
+)
+
+VAR Change = DIVIDE(CurrentValue - PrevValue, PrevValue)
+
+RETURN 
+IF(
+    NOT HasOneYear,
+    "-",
+    IF(CurrentYear = 2011, 0, Change)
+)
+```
+
+
+### InactivityRate
+
+Computes the proportion of adults reporting no leisure-time physical activity.
+
+```DAX
+InactivityRate = 
+CALCULATE(
+    AVERAGE(obesity_data[Data_Value]) / 100,
+    obesity_data[Category] = "Physical Inactivity"
+)
+```
+### MaxObesity
+
+Returns the obesity rate for the most recent year in the dataset.
+
+```DAX
+MaxObesity = 
+IF(
+    MAX(obesity_data[Year]) = CALCULATE(MAX(obesity_data[Year]), ALL(obesity_data)),
+    [ObesityRate],
+    BLANK()
+)
+```
+
+### NationalObesityRate
+
+Calculates the national-level obesity rate (category “Overweight”) across all regions.
+```DAX
+NationalObesityRate = 
+CALCULATE(
+    AVERAGE(obesity_data[Data_Value]),
+    obesity_data[Category] = "Overweight",
+    ALL(obesity_data[Region])
+)
+```
+### NutritionRate
+
+Calculates the average prevalence of healthy dietary behavior (fruit and vegetable consumption).
+```DAX
+NutritionRate = 
+CALCULATE(
+    AVERAGE(obesity_data[Data_Value]) / 100,
+    FILTER(
+        obesity_data, 
+        obesity_data[Category] = "Nutrition - Fruit" ||
+        obesity_data[Category] = "Nutrition - Vegetable"
+    )
+)
+```
+### ObesityRate
+
+Determines the overall obesity prevalence rate (category “Overweight”).
+
+```DAX
+ObesityRate = 
+CALCULATE(
+    AVERAGE(obesity_data[Data_Value]) / 100,
+    obesity_data[Category] = "Overweight"
+)
+```
+### AllRegion
+
+Calculates the average prevalence rate across all regions for comparison.
+```DAX
+AllRegion = 
+CALCULATE(
+    AVERAGE(obesity_data[Data_Value]),
+    ALL(obesity_data[Region])
+)
+```
+
+
+## Conclusion
+
+- From 2011 to 2023, global obesity rates have kept going up, even though people are more aware of health and nutrition.
+
+- The dashboard shows that women and college graduates tend to have higher obesity rates, which could be linked to lifestyle or work habits.
+
+- Lack of activity and poor eating habits are clearly tied to obesity across all groups, and some ethnic groups, especially non-Hispanic Black and Hispanic populations, face higher combined risks.
+
+- A few regions have improved in activity levels, but overall, global efforts have not been enough to slow down obesity growth.
+
+
+
+## Recommendations
+1. Focus more programs on groups and areas where obesity and inactivity are highest.
+2. Combine exercise and healthy eating campaigns instead of treating them separately.
+3. Use real behavior data to make lifestyle tips more personal and practical.
+4. Keep tracking the numbers every year to see what’s working and fix what’s not.
+5. Bring more health education into schools and offices in a simple, consistent way.
+6. Get healthcare, food, and education sectors to work together on long-term solutions.
+ 
