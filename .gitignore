@@ -1,4 +1,4 @@
 *.csv
+*.xlsx
 .ipynb_checkpoints/
 powerbi_obesity_trends_dashboard/global-obesity-analysis_files/
-sql_healthcare_case_study/
