@@ -1,4 +1,4 @@
-I’ve documented the complete analysis along with annotated comments here:  [SQL Bank Target Marketing Detailed Analysis - Full Report (PDF)](./Full%20Report%20-%20SQL%20Bank%20Target%20Marketing%20Analysis.pdf)
+I’ve documented the complete analysis along with annotated comments here:  [SQL Bank Target Marketing Detailed Analysis - Full Report (PDF)](./sql_bank_marketing_analysis_report.pdf)
 
 # SQL Bank Target Marketing Analysis
 ## Overview

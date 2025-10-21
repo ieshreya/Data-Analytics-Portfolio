@@ -8,4 +8,4 @@ In this analysis, we will explore global population trends over time and demogra
 
 ---
 
-[Read the full analysis here](./Python_Global_Population_Trends_Analysis.ipynb)
+[Read the full analysis here](./python_population_trends_analysis.ipynb)
