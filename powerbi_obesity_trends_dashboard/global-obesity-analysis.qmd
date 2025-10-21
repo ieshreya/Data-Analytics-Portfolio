@@ -16,9 +16,9 @@ Obesity is a major global public health concern associated with chronic conditio
 
 This project analyzes **global obesity trends** from 2011 to 2023, along with physical activity and nutritional patterns, to draw insights for targeted public health interventions.
 
-![](./obesity_trends.png) 
+![](https://raw.githubusercontent.com/ieshreya/Data-Analytics-Portfolio/refs/heads/main/powerbi_obesity_trends_dashboard/obesity_trends.png) 
 
-[Download the dashboard here](./powerbi_obesity_trends_dashboard.pbix)
+[Download the dashboard here](https://github.com/ieshreya/Data-Analytics-Portfolio/blob/main/powerbi_obesity_trends_dashboard/powerbi_obesity_trends_dashboard.pbix)
 ---
 
 # Project Objectives
